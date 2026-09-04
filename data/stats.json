@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-04 15:33",
+  "generated_at": "2026-09-04 15:34",
   "overall": {
-    "total": 2584,
+    "total": 4512,
     "seen": 0,
-    "unseen": 2584,
-    "new": 2584,
+    "unseen": 4512,
+    "new": 4512,
     "learning": 0,
     "relearning": 0,
     "young": 0,
@@ -84,11 +84,11 @@
   ],
   "decks": [
     {
-      "name": "ANZCA Primary",
-      "total": 0,
+      "name": "ANZCA primary",
+      "total": 1928,
       "seen": 0,
-      "unseen": 0,
-      "new": 0,
+      "unseen": 1928,
+      "new": 1928,
       "learning": 0,
       "relearning": 0,
       "young": 0,
@@ -121,7 +121,7 @@
     }
   ],
   "roots": [
-    "ANZCA Primary",
+    "ANZCA primary",
     "Pharmacology"
   ]
 }
