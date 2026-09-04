@@ -5,7 +5,7 @@ from collections import defaultdict
 ANKI_URL="http://127.0.0.1:8765"
 REPO=os.environ.get("GITHUB_REPO")
 TOKEN=os.environ.get("GITHUB_TOKEN")
-ROOTS=[x.strip() for x in os.environ.get("ANKI_ROOT_DECKS","My ANZCA primary;Pharmacology").split(";") if x.strip()]
+ROOTS=[x.strip() for x in os.environ.get("ANKI_ROOT_DECKS","ANZCA primary;Pharmacology").split(";") if x.strip()]
 if not REPO or not TOKEN: raise SystemExit("Set GITHUB_REPO and GITHUB_TOKEN first.")
 
 def anki(action,params=None):
