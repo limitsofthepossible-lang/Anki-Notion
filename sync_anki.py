@@ -1,167 +1,185 @@
-import base64, datetime, json, os, time, urllib.error, urllib.request
+import os, json, base64, urllib.request, urllib.error
+from datetime import datetime, timezone, timedelta
 from collections import defaultdict
-from pathlib import Path
 
 ANKI_URL = "http://127.0.0.1:8765"
-ROOT = "My ANZCA primary"
-OUT = Path(__file__).with_name("data") / "stats.json"
-BATCH = 400
+REPO = os.environ.get("GITHUB_REPO")
+TOKEN = os.environ.get("GITHUB_TOKEN")
+ROOT = os.environ.get("ANKI_ROOT_DECK", "My ANZCA primary")
+
+if not REPO or not TOKEN:
+    raise SystemExit("Set GITHUB_REPO and GITHUB_TOKEN first.")
 
 def anki(action, params=None):
-    payload={"action":action,"version":6}
-    if params is not None: payload["params"]=params
-    req=urllib.request.Request(ANKI_URL,data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type":"application/json"})
-    with urllib.request.urlopen(req,timeout=30) as r:
-        obj=json.loads(r.read().decode("utf-8"))
-    if obj.get("error"):
-        raise RuntimeError(f"AnkiConnect {action}: {obj['error']}")
-    return obj["result"]
+    payload = json.dumps({"action": action, "version": 6, "params": params or {}}).encode()
+    req = urllib.request.Request(ANKI_URL, data=payload, headers={"Content-Type":"application/json"})
+    with urllib.request.urlopen(req, timeout=60) as r:
+        out = json.loads(r.read().decode())
+    if out.get("error"):
+        raise RuntimeError(f"AnkiConnect {action}: {out['error']}")
+    return out["result"]
 
-def chunks(seq,n=BATCH):
-    for i in range(0,len(seq),n):
-        yield seq[i:i+n]
-
-def github_put(path,raw,message):
-    token=os.environ.get("GITHUB_TOKEN")
-    repo=os.environ.get("GITHUB_REPO")
-    if not token or not repo:
-        raise RuntimeError("GITHUB_TOKEN or GITHUB_REPO is not set.")
-    url=f"https://api.github.com/repos/{repo}/contents/{path}"
-    headers={"Authorization":f"Bearer {token}","Accept":"application/vnd.github+json",
-             "X-GitHub-Api-Version":"2022-11-28","Content-Type":"application/json"}
+def github_put(path, content):
+    url=f"https://api.github.com/repos/{REPO}/contents/{path}"
+    headers={"Authorization":f"Bearer {TOKEN}","Accept":"application/vnd.github+json","User-Agent":"anki-dashboard"}
+    # Get current SHA if the file already exists.
     sha=None
+    req=urllib.request.Request(url,headers=headers)
     try:
-        req=urllib.request.Request(url,headers=headers)
-        with urllib.request.urlopen(req,timeout=20) as r: sha=json.loads(r.read().decode())["sha"]
+        with urllib.request.urlopen(req,timeout=30) as r:
+            sha=json.loads(r.read().decode()).get("sha")
     except urllib.error.HTTPError as e:
-        if e.code!=404: raise
-    body={"message":message,"content":base64.b64encode(raw).decode()}
+        if e.code != 404: raise
+    body={"message":"Update Anki dashboard stats","content":base64.b64encode(content.encode()).decode()}
     if sha: body["sha"]=sha
-    req=urllib.request.Request(url,data=json.dumps(body).encode(),headers=headers,method="PUT")
-    with urllib.request.urlopen(req,timeout=30): pass
+    req=urllib.request.Request(url,data=json.dumps(body).encode(),headers={**headers,"Content-Type":"application/json"},method="PUT")
+    with urllib.request.urlopen(req,timeout=30) as r: return json.loads(r.read().decode())
 
-def state(c):
-    q=int(c.get("queue",0)); typ=int(c.get("type",0)); ivl=int(c.get("interval",0) or 0)
-    if q==-1: return "suspended"
-    if q==-2: return "buried"
-    if typ==0 and q==0: return "new"
-    if q==1: return "learning"
-    if q==3: return "relearning"
-    if q==2: return "mature" if ivl>=21 else "young"
-    if typ==2: return "young"
-    return "new"
+def batches(xs,n=400):
+    for i in range(0,len(xs),n): yield xs[i:i+n]
 
-def aggregate(cards):
-    s=defaultdict(int)
+def classify(info):
+    q=info.get("queue",0)
+    typ=info.get("type",0)
+    interval=info.get("interval",0) or 0
+    # Anki queues: 0=new, 1=learning, 2=review, 3=relearning.
+    if info.get("queue") == -1: return "suspended"
+    if q == -2: return "buried"
+    if typ == 0 and q == 0: return "new"
+    if q == 1: return "learning"
+    if q == 3: return "relearning"
+    if q == 2: return "mature" if interval >= 21 else "young"
+    return "new" if info.get("reps",0)==0 else "young"
+
+def review_stats(card_ids):
+    cutoff=int((datetime.now(timezone.utc)-timedelta(days=30)).timestamp()*1000)
+    total=again=0; ms=0
+    by_day=defaultdict(int)
+    # getReviewsOfCards returns a dict keyed by card id in current AnkiConnect.
+    for batch in batches(card_ids):
+        res=anki("getReviewsOfCards",{"cards":batch})
+        if isinstance(res,dict):
+            rows=[r for vals in res.values() for r in (vals or [])]
+        else:
+            rows=res or []
+        for r in rows:
+            rid=int(r.get("id",0))
+            if rid < cutoff: continue
+            total += 1
+            if int(r.get("ease",0)) == 1: again += 1
+            ms += int(r.get("time",0) or 0)
+            dt=datetime.fromtimestamp(rid/1000,timezone.utc).astimezone()
+            by_day[dt.date().isoformat()] += 1
+    return {"reviews_30d":total,"again":again,"time_ms":ms,"by_day":dict(by_day)}
+
+def scope_ids(deck_name):
+    # deck:ROOT includes descendants; quote the name for spaces/punctuation.
+    return anki("findCards",{"query":f'deck:"{deck_name}"'})
+
+# Get all cards below the root, then use each card's actual deckName.
+card_ids=scope_ids(ROOT)
+infos=[]
+for batch in batches(card_ids):
+    infos.extend(anki("cardsInfo",{"cards":batch}) or [])
+
+# De-duplicate cards defensively.
+by_id={int(x["cardId"]):x for x in infos}
+infos=list(by_id.values())
+
+# Actual decks represented by cards, plus all known nested decks.
+names=anki("deckNames") or []
+actual_names={x.get("deckName") for x in infos if x.get("deckName")}
+known={n for n in names if n==ROOT or n.startswith(ROOT+"::")}
+all_decks=sorted(known|actual_names, key=lambda n:(n.count("::"),n.lower()))
+
+def descendants(name):
+    prefix=name+"::"
+    return [i for i in infos if i.get("deckName")==name or i.get("deckName","").startswith(prefix)]
+
+def metrics(cards):
+    total=len(cards)
+    state=defaultdict(int)
+    seen=0
     for c in cards:
-        s["total"]+=1
-        st=state(c); s[st]+=1
-        if int(c.get("reps",0) or 0)>0: s["seen"]+=1
-        if int(c.get("lapses",0) or 0)>0: s["lapsed"]+=1
-    return s
-
-def main():
-    names=anki("deckNames")
-    decks=sorted([n for n in names if n==ROOT or n.startswith(ROOT+"::")],
-                 key=lambda x:(x.count("::"),x.lower()))
-    if ROOT not in decks: raise RuntimeError(f'Could not find "{ROOT}".')
-
-    # Anki search deck:ROOT includes all descendants.
-    ids=anki("findCards",{"query":f'deck:"{ROOT}"'})
-    cards=[]
-    for b in chunks(ids): cards.extend(anki("cardsInfo",{"cards":b}))
-    cards=[c for c in cards if c]
-    own=defaultdict(list)
-    for c in cards: own[c.get("deckName",ROOT)].append(c)
-
-    # Fetch review history once. getReviewsOfCards is read-only and returns the revlog
-    # records for each card; we then aggregate by the card's current deck.
-    histories={}
-    for b in chunks([c["cardId"] for c in cards]):
-        res=anki("getReviewsOfCards",{"cards":b})
-        histories.update({str(k):v for k,v in res.items()})
-
-    now=datetime.datetime.now().astimezone()
-    cutoff30=now-datetime.timedelta(days=30)
-
-    # Authoritative Anki-local calendar history. Do NOT mix these dates with UTC dates.
-    activity30={}
-    for ds,count in anki("getNumCardsReviewedByDay"):
-        try:
-            d=datetime.date.fromisoformat(ds)
-            if now.date()-datetime.timedelta(days=29) <= d <= now.date():
-                activity30[ds]=int(count)
-        except Exception:
-            continue
-
-    def scope_cards(deck):
-        prefix=deck+"::"
-        return [c for actual,cs in own.items() if actual==deck or actual.startswith(prefix) for c in cs]
-
-    def review_metrics(deck):
-        reviews=again=time_ms=0
-        for c in scope_cards(deck):
-            for r in histories.get(str(c["cardId"]),[]):
-                rid=int(r.get("id",0))
-                dt=datetime.datetime.fromtimestamp(rid/1000,datetime.timezone.utc).astimezone()
-                if dt>=cutoff30:
-                    reviews+=1
-                    again+=1 if int(r.get("ease",0))==1 else 0
-                    time_ms+=int(r.get("time",0) or 0)
-        return reviews,again,time_ms
-
-    rows=[]
-    for d in decks:
-        s=aggregate(scope_cards(d))
-        reviews,again,time_ms=review_metrics(d)
-        due=len(anki("findCards",{"query":f'deck:"{d}" is:due'}))
-        overdue=len(anki("findCards",{"query":f'deck:"{d}" is:review prop:due<=-1'}))
-        total=s["total"]; seen=s["seen"]
-        rows.append({
-            "name":d,
-            "display_name":ROOT if d==ROOT else d[len(ROOT)+2:],
-            "level":d.count("::"),
-            "parent":None if d==ROOT else d.rsplit("::",1)[0],
-            "total":total,"seen":seen,"unseen":max(0,total-seen),
-            "progress":round(seen/total*100,1) if total else 100,
-            "new":s["new"],"learning":s["learning"],"relearning":s["relearning"],
-            "young":s["young"],"mature":s["mature"],"suspended":s["suspended"],"buried":s["buried"],
-            "lapsed":s["lapsed"],"due":due,"overdue":overdue,
-            "reviews_30d":reviews,"again_30d":again,
-            "again_rate_30d":round(again/reviews*100,1) if reviews else None,
-            "time_min_30d":round(time_ms/60000,1)
-        })
-
-    root=next(r for r in rows if r["name"]==ROOT)
-    activity=[{"date":d,"count":activity30[d]} for d in sorted(activity30)]
-    today=int(anki("getNumCardsReviewedToday"))
-    last7=sum(x["count"] for x in activity[-7:])
-    last30=sum(x["count"] for x in activity)
-    active_days=sum(x["count"]>0 for x in activity)
-    avg_reviews=round(last30/active_days,1) if active_days else 0
-
-    # "introduced" is Anki's first-answer search, not a count of current new cards.
-    introduced7=len(anki("findCards",{"query":f'deck:"{ROOT}" introduced:7'}))
-    introduced30=len(anki("findCards",{"query":f'deck:"{ROOT}" introduced:30'}))
-    pace=introduced30/30
-    eta=round(root["unseen"]/pace,1) if pace>0 else None
-
-    data={
-        "updated_local":now.strftime("%Y-%m-%d %H:%M"),
-        "root":ROOT,"overall":root,"today":today,"last7":last7,"last30":last30,
-        "active_days_30":active_days,"avg_reviews_active_day_30":avg_reviews,
-        "introduced7":introduced7,"introduced30":introduced30,
-        "new_cards_per_day_30":round(pace,1),"eta_days_unseen":eta,
-        "activity":activity,"decks":rows
+        if int(c.get("reps",0) or 0)>0: seen+=1
+        state[classify(c)]+=1
+    ids=[int(c["cardId"]) for c in cards]
+    rs=review_stats(ids) if ids else {"reviews_30d":0,"again":0,"time_ms":0,"by_day":{}}
+    due=0
+    if ids:
+        due_ids=set(anki("areDue",{"cards":ids}) or [])
+        due=len(due_ids)
+    # "overdue" means review cards whose due date is before today.
+    today_start=int(datetime.now().astimezone().replace(hour=0,minute=0,second=0,microsecond=0).timestamp())
+    overdue=sum(1 for c in cards if c.get("type")==2 and (c.get("due",0) or 0) < today_start/86400)
+    return {
+        "total":total,"seen":seen,"unseen":total-seen,
+        "new":state["new"],"learning":state["learning"],"relearning":state["relearning"],
+        "young":state["young"],"mature":state["mature"],"suspended":state["suspended"],
+        "buried":state["buried"],"due":due,"overdue":overdue,
+        "reviews_30d":rs["reviews_30d"],
+        "again_rate":(rs["again"]/rs["reviews_30d"]*100) if rs["reviews_30d"] else None,
+        "time_ms":rs["time_ms"]
     }
-    raw=json.dumps(data,indent=2).encode("utf-8")
-    OUT.parent.mkdir(exist_ok=True); OUT.write_bytes(raw)
-    github_put("data/stats.json",raw,"Update Anki statistics")
-    print(f"Synced {len(cards)} cards across {len(decks)} decks.")
-    print(f"Progress: {root['progress']}% | unseen: {root['unseen']} | reviews 30d: {last30}")
 
-if __name__=="__main__":
-    try: main()
-    except Exception as e:
-        print("ERROR:",e); raise
+deck_rows=[]
+for name in all_decks:
+    cards=descendants(name)
+    m=metrics(cards)
+    # Display relative name for nested decks.
+    display=name[len(ROOT+"::"):] if name.startswith(ROOT+"::") else name
+    depth=name.count("::")-ROOT.count("::")
+    deck_rows.append({"name":display,"full_name":name,"depth":max(0,depth),**m})
+
+# Root overall metrics is exactly the root roll-up.
+overall=metrics(infos)
+
+# Activity: Anki's own day-level review endpoint is the source of truth for calendar days.
+day_rows=anki("getNumCardsReviewedByDay") or []
+today=datetime.now().astimezone().date()
+activity=[]
+for i in range(13,-1,-1):
+    day=today-timedelta(days=i)
+    ds=day.isoformat()
+    count=0
+    for row in day_rows:
+        if isinstance(row,dict):
+            k=row.get("date") or row.get("day")
+            v=row.get("count",row.get("reviews",0))
+            if k and str(k)[:10]==ds: count=int(v or 0)
+    activity.append({"date":ds,"count":count})
+
+# New cards introduced: use Anki search, which is based on introduction history.
+def introduced(days):
+    ids=anki("findCards",{"query":f'deck:"{ROOT}" introduced:{days}'}) or []
+    return len(set(ids))
+
+new7=introduced(7)
+new30=introduced(30)
+
+reviews_today=anki("getNumCardsReviewedToday") or 0
+active_days=sum(1 for x in activity if x["count"]>0)
+pace=new30/30 if new30 else 0
+eta=(overall["unseen"]/pace) if pace>0 else None
+
+# Use actual historical review activity to avoid mixing incompatible timestamp formats.
+stats={
+    "generated_at":datetime.now().astimezone().strftime("%Y-%m-%d %H:%M"),
+    "overall":{
+        **overall,
+        "reviews_today":int(reviews_today),
+        "reviews_7d":sum(x["count"] for x in activity[-7:]),
+        "active_days_30d":active_days,
+        "new_7d":new7,
+        "new_30d":new30,
+        "new_per_day_30d":pace if new30 else None,
+        "eta_days":eta
+    },
+    "activity":activity,
+    "decks":deck_rows
+}
+
+content=json.dumps(stats,indent=2)
+github_put("data/stats.json",content)
+print(f"Synced {len(infos)} cards across {len(all_decks)} decks.")
+print(f"Progress: {overall['seen']/overall['total']*100 if overall['total'] else 0:.1f}% | unseen: {overall['unseen']} | reviews 30d: {overall['reviews_30d']}")
