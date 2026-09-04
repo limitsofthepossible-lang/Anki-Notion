@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ANZCA Primary — Anki Progress</title>
+<style>
+:root{--bg:#f5f5f2;--card:#fff;--text:#1f1f1f;--muted:#747474;--line:#e5e5e0;--bar:#242424;--soft:#ededE9}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1050px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:20px}
+h1{font-size:25px;margin:0 0 5px;letter-spacing:-.5px}.sub,.muted{color:var(--muted);font-size:12px}.updated{font-size:11px;color:var(--muted)}
+.hero,.card,.deck{background:var(--card);border:1px solid var(--line);border-radius:14px}.hero{padding:22px;margin-bottom:12px}
+.herorow{display:flex;justify-content:space-between;align-items:end;gap:20px}.big{font-size:44px;font-weight:750;letter-spacing:-2px}.big small{font-size:16px;font-weight:500;color:var(--muted)}
+.progress{height:10px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:14px}.fill{height:100%;background:var(--bar);border-radius:99px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}.card{padding:15px}.num{font-size:24px;font-weight:700}.label{font-size:11px;color:var(--muted);margin-top:3px}
+.section{font-size:12px;font-weight:750;margin:20px 0 8px;letter-spacing:.3px}.activity{padding:18px}.bars{height:115px;display:grid;grid-template-columns:repeat(14,1fr);gap:5px;align-items:end}
+.barwrap{height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center}.bar{width:100%;max-width:28px;background:var(--bar);border-radius:4px 4px 1px 1px;min-height:2px}.barlabel{font-size:8px;color:var(--muted);margin-top:4px}.barnum{font-size:8px;margin-bottom:3px}
+.decks{display:flex;flex-direction:column;gap:8px}.deck{padding:14px 16px}.dhead{display:flex;justify-content:space-between;gap:15px}.dname{font-weight:650;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pct{font-size:12px;color:var(--muted)}
+.mini{height:7px;background:var(--soft);border-radius:99px;overflow:hidden;margin:9px 0}.meta{display:flex;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:10px}.meta b{color:var(--text);font-weight:600}
+.parent{margin-top:16px}.indent{padding-left:25px}.footer{text-align:right;color:var(--muted);font-size:9px;margin-top:12px}
+.error{padding:18px;background:#fff0f0;border:1px solid #edcccc;border-radius:12px;color:#8a3333;font-size:13px}
+@media(max-width:760px){.wrap{padding:16px}.grid{grid-template-columns:repeat(2,1fr)}.big{font-size:36px}.top{align-items:start}.bars{grid-template-columns:repeat(7,1fr);height:130px}.barwrap:nth-child(n+8){display:none}}
+</style>
+</head>
+<body><div class="wrap"><div id="app">Loading…</div></div>
+<script>
+const f=n=>new Intl.NumberFormat().format(n||0), esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function render(d){
+ const o=d.overall, days=(d.activity||[]).slice(-14), mx=Math.max(1,...days.map(x=>x.count));
+ const bars=days.map(x=>`<div class="barwrap"><div class="barnum">${f(x.count)}</div><div class="bar" style="height:${Math.max(2,Math.round(x.count/mx*75))}px"></div><div class="barlabel">${x.date.slice(5)}</div></div>`).join("");
+ const decks=d.decks||[];
+ const parents=decks.filter(x=>!x.parent);
+ const children=decks.filter(x=>x.parent);
+ function row(x,child=false){return `<div class="deck ${child?'indent':''}">
+ <div class="dhead"><div class="dname">${esc(x.short_name)}</div><div class="pct">${x.progress}%</div></div>
+ <div class="mini"><div class="fill" style="width:${x.progress}%"></div></div>
+ <div class="meta"><span><b>${f(x.seen)}</b> seen</span><span><b>${f(x.unseen)}</b> unseen</span><span><b>${f(x.reviews_30d)}</b> reviews/30d</span><span><b>${f(x.again_30d)}</b> Again/30d</span><span><b>${f(x.due)}</b> due</span></div>
+ </div>`}
+ const deckHtml=parents.map(p=>`<div class="parent">${row(p)}${children.filter(c=>c.parent===p.name).map(c=>row(c,true)).join("")}</div>`).join("");
+ document.getElementById("app").innerHTML=`
+ <div class="top"><div><h1>ANZCA Primary — Anki</h1><div class="sub">Study progress and recent work across your decks</div></div><div class="updated">Last sync: ${esc(d.updated_local||"—")}</div></div>
+ <div class="hero"><div class="herorow"><div><div class="big">${o.progress}% <small>completed</small></div><div class="sub">${f(o.seen)} of ${f(o.total)} cards seen at least once</div></div><div style="text-align:right"><div class="sub">Unseen remaining</div><strong>${f(o.unseen)}</strong></div></div><div class="progress"><div class="fill" style="width:${o.progress}%"></div></div></div>
+ <div class="grid">
+  <div class="card"><div class="num">${f(d.today)}</div><div class="label">reviewed today</div></div>
+  <div class="card"><div class="num">${f(d.last7)}</div><div class="label">reviews in last 7 days</div></div>
+  <div class="card"><div class="num">${f(d.last30)}</div><div class="label">reviews in last 30 days</div></div>
+  <div class="card"><div class="num">${f(d.total_reviews)}</div><div class="label">reviews recorded in dashboard</div></div>
+ </div>
+ <div class="section">RECENT ACTIVITY</div><div class="hero activity"><div class="bars">${bars||'<span class="muted">No review activity yet.</span>'}</div></div>
+ <div class="section">DECKS & SUBDECKS</div><div class="decks">${deckHtml||'<span class="muted">No decks found.</span>'}</div>
+ <div class="footer">“Completed” = card is no longer new/unseen. This dashboard is updated by the local sync script.</div>`;
+}
+fetch("data/stats.json?"+Date.now(),{cache:"no-store"}).then(r=>r.json()).then(render).catch(e=>document.getElementById("app").innerHTML=`<div class="error"><b>Stats unavailable.</b><br>${esc(e.message)}</div>`);
+</script></body></html>
