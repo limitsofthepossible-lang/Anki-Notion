@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-04 21:00",
+  "generated_at": "2026-09-04 21:34",
   "overall": {
     "total": 2584,
     "seen": 25,
@@ -19,10 +19,10 @@
     "reviews_today": 109,
     "reviews_7d": 0,
     "active_days_30d": 0,
-    "new_7d": 25,
-    "new_30d": 25,
-    "new_per_day_30d": 0.8333333333333334,
-    "eta_days": 3070.7999999999997
+    "new_7d": 45,
+    "new_30d": 45,
+    "new_per_day_30d": 1.5,
+    "eta_days": 1706.0
   },
   "activity": [
     {
@@ -84,7 +84,7 @@
   ],
   "decks": [
     {
-      "name": "My ANZCA primary",
+      "name": "ANZCA Primary",
       "total": 0,
       "seen": 0,
       "unseen": 0,
@@ -121,7 +121,7 @@
     }
   ],
   "roots": [
-    "My ANZCA primary",
+    "ANZCA Primary",
     "Pharmacology"
   ]
 }
