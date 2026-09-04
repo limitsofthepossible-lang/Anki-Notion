@@ -5,136 +5,172 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ANZCA Primary — Anki</title>
 <style>
+:root{
+  --bg:#f6f8fb;--card:#fff;--text:#172033;--muted:#718096;--line:#e7ebf1;
+  --blue:#3b82f6;--green:#35b78b;--purple:#7c4dff;--orange:#f59e0b;--red:#ef5b67;
+  --shadow:0 2px 10px rgba(30,50,80,.045)
+}
 *{box-sizing:border-box}
-body{margin:0;background:#f7f7f5;color:#202124;font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-.wrap{max-width:1100px;margin:0 auto;padding:24px 20px 40px}
-header{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}
-h1{font-size:25px;margin:0;font-weight:700}
-.sub{color:#777;margin-top:3px}
-.sync{font-size:12px;color:#777}
-.card{background:#fff;border:1px solid #e5e5e2;border-radius:14px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.02)}
-.progress{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center}
-.big{font-size:42px;font-weight:750;letter-spacing:-1px}
-.big small{font-size:14px;font-weight:500;letter-spacing:0}
-.bar{height:9px;background:#ececea;border-radius:99px;overflow:hidden}
-.fill{height:100%;background:#222;border-radius:99px}
-.right{text-align:right}.muted{color:#777;font-size:12px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:10px 0}
-.stat b{display:block;font-size:22px;margin-bottom:2px}
-.section{margin-top:20px}
-.section h2{font-size:13px;text-transform:uppercase;letter-spacing:.05em;margin:0 0 9px}
-.activity{display:flex;align-items:end;gap:5px;height:90px;padding-top:8px}
-.day{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:end}
-.col{width:100%;max-width:28px;background:#222;border-radius:4px 4px 1px 1px;min-height:2px}
-.day span{font-size:10px;color:#888;margin-top:4px}
-.decks{display:flex;flex-direction:column;gap:7px}
-.deck{background:#fff;border:1px solid #e5e5e2;border-radius:12px;padding:12px 14px}
-.decktop{display:flex;justify-content:space-between;gap:10px;align-items:center}
-.name{font-weight:650}
-.pct{font-size:12px;color:#777}
-.mini{height:6px;background:#ececea;border-radius:99px;margin:8px 0}
-.meta{display:flex;flex-wrap:wrap;gap:9px;color:#666;font-size:11px}
-.meta strong{color:#222;font-weight:600}
-.indent{margin-left:18px}
-.note{font-size:11px;color:#888;margin-top:9px}
-@media(max-width:750px){.grid{grid-template-columns:repeat(2,1fr)}.progress{grid-template-columns:1fr}.right{text-align:left}header{display:block}.sync{margin-top:6px}.indent{margin-left:10px}}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+.wrap{max-width:1180px;margin:auto;padding:22px 14px 30px}
+header{display:flex;justify-content:space-between;align-items:center;margin:0 4px 18px}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:42px;height:42px;border-radius:12px;background:#eaf3ff;color:var(--blue);display:grid;place-items:center;font-size:23px;font-weight:800}
+h1{font-size:25px;line-height:1.1;margin:0;font-weight:760;letter-spacing:-.5px}
+.sub{color:var(--muted);margin-top:4px}
+.sync{font-size:12px;color:var(--muted);text-align:right}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+.hero{display:grid;grid-template-columns:1fr 1.25fr .32fr;gap:22px;padding:22px}
+.kicker{font-size:12px;font-weight:700;color:#40516b;margin-bottom:2px}
+.big{font-size:50px;line-height:1;font-weight:800;letter-spacing:-2px;margin:4px 0}
+.progressbar{height:10px;background:#e9edf2;border-radius:99px;overflow:hidden;margin-top:12px}
+.fill{height:100%;background:var(--blue);border-radius:99px}
+.hero-right{border-left:1px solid var(--line);padding-left:22px;display:flex;flex-direction:column;justify-content:center}
+.hero-right b{font-size:24px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.stat{padding:16px;min-height:98px}
+.stat .icon{font-size:18px;margin-bottom:8px}
+.stat b{display:block;font-size:25px;line-height:1.1}
+.stat span{color:var(--muted);font-size:12px}
+.blue{background:#eef6ff}.green{background:#eefaf6}.purple{background:#f4efff}.orange{background:#fff6e9}
+.section{margin-top:16px}
+.section-title{display:flex;justify-content:space-between;align-items:end;margin:0 4px 8px}
+.section-title h2{font-size:15px;margin:0}.section-title span{font-size:12px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1.15fr .9fr;gap:10px}
+.panel{padding:17px}
+.panel-title{font-size:15px;font-weight:720;margin-bottom:1px}
+.panel-sub{font-size:12px;color:var(--muted)}
+.activity{height:110px;display:flex;align-items:end;gap:6px;padding:12px 2px 0}
+.day{flex:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:end}
+.bar{width:min(28px,75%);min-height:2px;background:var(--blue);border-radius:5px 5px 1px 1px}
+.day .n{font-size:10px;font-weight:650;margin-bottom:2px}.day .d{font-size:9px;color:#8b96a6;margin-top:4px}
+.pacegrid{display:grid;grid-template-columns:repeat(3,1fr);margin-top:20px}
+.pacecell{padding:0 14px;border-left:1px solid var(--line)}.pacecell:first-child{border-left:0;padding-left:0}
+.pacecell b{font-size:25px}.pacecell span{display:block;color:var(--muted);font-size:11px}
+.state{padding:17px}
+.stategrid{display:grid;grid-template-columns:repeat(8,1fr);margin-top:13px}
+.statecell{padding:0 11px;border-left:1px solid var(--line)}.statecell:first-child{border-left:0;padding-left:0}
+.statecell b{font-size:21px}.statecell span{display:block;color:var(--muted);font-size:11px}
+.statecell.new b{color:#244b86}.statecell.learning b{color:var(--orange)}.statecell.relearn b,.statecell.due b{color:var(--red)}
+.statecell.young b{color:var(--purple)}.statecell.mature b{color:#087454}.statecell.suspended b{color:#667085}
+.decks{padding:0;overflow:hidden}
+.deck-head,.deck-row{display:grid;grid-template-columns:2fr .7fr .65fr .75fr 1.6fr;align-items:center;gap:12px;padding:12px 16px}
+.deck-head{background:#f5f7fa;color:#526176;font-size:11px;font-weight:700}
+.deck-row{border-top:1px solid var(--line);font-size:12px}
+.deck-name{font-weight:680;display:flex;align-items:center;gap:9px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.deck-row b{font-weight:650}
+.progress-wrap{display:flex;align-items:center;gap:8px}
+.mini{height:8px;background:#e9edf2;border-radius:99px;overflow:hidden;flex:1}
+.mini .fill{background:var(--blue)}
+.footer{margin-top:12px;padding:12px 16px;background:#eef6ff;border:1px solid #d8e9ff;border-radius:13px;color:#496b9b;font-size:11px;display:flex;justify-content:space-between}
+@media(max-width:850px){
+ .hero{grid-template-columns:1fr}.hero-right{border-left:0;border-top:1px solid var(--line);padding:12px 0 0}
+ .stats{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.stategrid{grid-template-columns:repeat(4,1fr);gap:14px}
+ .statecell{border-left:0;padding:0}.deck-head{display:none}.deck-row{grid-template-columns:1.5fr .7fr .7fr 1.5fr;padding:12px}.deck-row .hide-mobile{display:none}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-  <div><h1>ANZCA Primary — Anki</h1><div class="sub">Progress, workload and recent study</div></div>
+  <div class="brand">
+    <div class="logo">✣</div>
+    <div><h1>ANZCA Primary — Anki</h1><div class="sub">Progress, workload and recent study</div></div>
+  </div>
   <div class="sync" id="sync">Loading…</div>
 </header>
 
-<div class="card progress">
-  <div><div class="big" id="pct">—<small> seen</small></div><div class="muted" id="seenText">Loading…</div></div>
-  <div><div class="bar"><div class="fill" id="fill" style="width:0%"></div></div></div>
-  <div class="right"><div class="muted">Unseen</div><b id="unseen">—</b></div>
+<div class="card hero">
+  <div>
+    <div class="kicker">Overall Progress</div>
+    <div class="big" id="pct">—%</div>
+    <div class="sub" id="seenText">Loading…</div>
+  </div>
+  <div style="display:flex;align-items:center">
+    <div style="width:100%">
+      <div class="progressbar"><div class="fill" id="fill"></div></div>
+    </div>
+  </div>
+  <div class="hero-right"><span class="sub">Unseen</span><b id="unseen">—</b></div>
 </div>
 
-<div class="grid">
-  <div class="card stat"><b id="today">—</b><span class="muted">reviews today</span></div>
-  <div class="card stat"><b id="r7">—</b><span class="muted">reviews · 7 days</span></div>
-  <div class="card stat"><b id="r30">—</b><span class="muted">reviews · 30 days</span></div>
-  <div class="card stat"><b id="days">—</b><span class="muted">study days · 30 days</span></div>
+<div class="stats">
+  <div class="card stat green"><div class="icon">▣</div><b id="today">—</b><span>Reviews today</span></div>
+  <div class="card stat blue"><div class="icon">▥</div><b id="r7">—</b><span>Reviews (7 days)</span></div>
+  <div class="card stat purple"><div class="icon">▥</div><b id="r30">—</b><span>Reviews (30 days)</span></div>
+  <div class="card stat orange"><div class="icon">♨</div><b id="days">—</b><span>Active study days (30 days)</span></div>
 </div>
 
-<section class="section">
-<h2>Recent activity</h2>
-<div class="card"><div class="activity" id="activity"></div></div>
+<section class="section two">
+  <div class="card panel">
+    <div class="panel-title">Recent Activity</div>
+    <div class="panel-sub">Daily reviews · last 14 days</div>
+    <div class="activity" id="activity"></div>
+  </div>
+  <div class="card panel">
+    <div class="panel-title">Study Pace</div>
+    <div class="panel-sub">Based on your recent activity</div>
+    <div class="pacegrid">
+      <div class="pacecell"><b id="new7">—</b><span>New cards (7 days)</span></div>
+      <div class="pacecell"><b id="new30">—</b><span>New cards (30 days)</span></div>
+      <div class="pacecell"><b id="eta">—</b><span>Estimated days to see all unseen</span></div>
+    </div>
+  </div>
 </section>
 
 <section class="section">
-<h2>Study pace</h2>
-<div class="grid">
-  <div class="card stat"><b id="new7">—</b><span class="muted">new cards · 7 days</span></div>
-  <div class="card stat"><b id="new30">—</b><span class="muted">new cards · 30 days</span></div>
-  <div class="card stat"><b id="pace">—</b><span class="muted">new cards / day</span></div>
-  <div class="card stat"><b id="eta">—</b><span class="muted">days to see all unseen</span></div>
+<div class="card state">
+  <div class="panel-title">Card State (All Decks)</div>
+  <div class="stategrid">
+    <div class="statecell new"><b id="snew">—</b><span>New / Unseen</span></div>
+    <div class="statecell learning"><b id="slearn">—</b><span>Learning</span></div>
+    <div class="statecell relearn"><b id="srelearn">—</b><span>Relearning</span></div>
+    <div class="statecell young"><b id="syoung">—</b><span>Young (&lt;21d)</span></div>
+    <div class="statecell mature"><b id="smature">—</b><span>Mature (≥21d)</span></div>
+    <div class="statecell due"><b id="sdue">—</b><span>Due now</span></div>
+    <div class="statecell due"><b id="soverdue">—</b><span>Overdue</span></div>
+    <div class="statecell suspended"><b id="ssusp">—</b><span>Suspended</span></div>
+  </div>
 </div>
 </section>
 
 <section class="section">
-<h2>Decks & subdecks</h2>
-<div class="decks" id="decks"></div>
-<div class="note">Seen = answered at least once · Mature = current interval ≥21 days · Again = last-30-day reviews answered “Again”.</div>
+<div class="section-title"><h2>Decks</h2><span>Progress by main deck · subdecks included</span></div>
+<div class="card decks">
+  <div class="deck-head"><div>Deck</div><div>Total Cards</div><div>Seen</div><div>Unseen</div><div>Progress</div></div>
+  <div id="decks"></div>
+</div>
 </section>
+
+<div class="footer"><span>ⓘ This dashboard shows statistics for your Anki collection (read-only via AnkiConnect).</span><span>Keep going — consistent practice leads to results.</span></div>
 </div>
 
 <script>
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString();
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 async function load(){
-  const r=await fetch('data/stats.json?'+Date.now(),{cache:'no-store'});
-  if(!r.ok) throw new Error('stats.json unavailable');
-  const d=await r.json();
-  const o=d.overall||{};
-  const pct=o.total?o.seen/o.total*100:0;
-  const fmt=n=>Number(n||0).toLocaleString();
-  document.getElementById('pct').innerHTML=pct.toFixed(0)+'%<small> seen</small>';
-  document.getElementById('seenText').textContent=`${fmt(o.seen)} of ${fmt(o.total)} cards have been reviewed at least once`;
-  document.getElementById('fill').style.width=Math.min(100,pct)+'%';
-  document.getElementById('unseen').textContent=fmt(o.unseen);
-  document.getElementById('today').textContent=fmt(o.reviews_today);
-  document.getElementById('r7').textContent=fmt(o.reviews_7d);
-  document.getElementById('r30').textContent=fmt(o.reviews_30d);
-  document.getElementById('days').textContent=fmt(o.active_days_30d);
-  document.getElementById('new7').textContent=fmt(o.new_7d);
-  document.getElementById('new30').textContent=fmt(o.new_30d);
-  document.getElementById('pace').textContent=o.new_per_day_30d==null?'—':o.new_per_day_30d.toFixed(1);
-  document.getElementById('eta').textContent=o.eta_days==null?'—':o.eta_days.toFixed(0);
-
-  const act=d.activity||[];
-  const max=Math.max(1,...act.map(x=>x.count||0));
-  document.getElementById('activity').innerHTML=act.map(x=>{
-    const h=Math.max(2,(x.count||0)/max*65);
-    const label=x.date.slice(5);
-    return `<div class="day" title="${x.date}: ${fmt(x.count)} reviews"><div class="col" style="height:${h}px"></div><span>${label}</span></div>`;
-  }).join('');
-
-  const decks=document.getElementById('decks');
-  decks.innerHTML=(d.decks||[]).map(x=>{
-    const p=x.total?x.seen/x.total*100:0;
-    const cls=x.depth?' indent':'';
-    return `<div class="deck${cls}">
-      <div class="decktop"><div class="name">${escapeHtml(x.name)}</div><div class="pct">${p.toFixed(0)}%</div></div>
-      <div class="mini"><div class="fill" style="width:${p}%"></div></div>
-      <div class="meta">
-        <span><strong>${fmt(x.seen)}</strong> seen</span>
-        <span><strong>${fmt(x.unseen)}</strong> unseen</span>
-        <span><strong>${fmt(x.mature)}</strong> mature</span>
-        <span><strong>${fmt(x.young)}</strong> young</span>
-        <span><strong>${fmt(x.learning)}</strong> learning</span>
-        <span><strong>${fmt(x.due)}</strong> due</span>
-        <span><strong>${fmt(x.overdue)}</strong> overdue</span>
-        <span><strong>${fmt(x.reviews_30d)}</strong> reviews/30d</span>
-        <span><strong>${x.again_rate==null?'—':x.again_rate.toFixed(0)+'%'}</strong> Again</span>
-      </div>
-    </div>`;
-  }).join('');
-  document.getElementById('sync').textContent='Last sync: '+(d.generated_at||'—');
+ const r=await fetch('data/stats.json?'+Date.now(),{cache:'no-store'});
+ if(!r.ok)throw Error('stats.json unavailable');
+ const d=await r.json(),o=d.overall||{},pct=o.total?o.seen/o.total*100:0;
+ $('pct').textContent=pct.toFixed(0)+'%';$('seenText').textContent=`${fmt(o.seen)} of ${fmt(o.total)} cards seen`;
+ $('fill').style.width=Math.min(100,pct)+'%';$('unseen').textContent=fmt(o.unseen);
+ $('today').textContent=fmt(o.reviews_today);$('r7').textContent=fmt(o.reviews_7d);$('r30').textContent=fmt(o.reviews_30d);$('days').textContent=fmt(o.active_days_30d);
+ $('new7').textContent=fmt(o.new_7d);$('new30').textContent=fmt(o.new_30d);$('eta').textContent=o.eta_days==null?'—':o.eta_days.toFixed(0);
+ $('snew').textContent=fmt(o.new);$('slearn').textContent=fmt(o.learning);$('srelearn').textContent=fmt(o.relearning);
+ $('syoung').textContent=fmt(o.young);$('smature').textContent=fmt(o.mature);$('sdue').textContent=fmt(o.due);$('soverdue').textContent=fmt(o.overdue);$('ssusp').textContent=fmt(o.suspended);
+ const a=d.activity||[],max=Math.max(1,...a.map(x=>x.count||0));
+ $('activity').innerHTML=a.map(x=>`<div class="day" title="${x.date}: ${fmt(x.count)} reviews"><div class="n">${fmt(x.count)}</div><div class="bar" style="height:${Math.max(2,(x.count||0)/max*62)}px"></div><div class="d">${x.date.slice(5)}</div></div>`).join('');
+ const dots=['#ef6670','#ff9b4a','#f3c64b','#45b989','#31b7ad','#4b8eea','#7251dc','#8c6ff0','#e26ba8'];
+ $('decks').innerHTML=(d.decks||[]).map((x,i)=>{let p=x.total?x.seen/x.total*100:0;return `<div class="deck-row">
+  <div class="deck-name"><i class="dot" style="background:${dots[i%dots.length]}"></i>${esc(x.name)}</div>
+  <div><b>${fmt(x.total)}</b></div><div><b>${fmt(x.seen)}</b></div><div><b>${fmt(x.unseen)}</b></div>
+  <div class="progress-wrap"><div class="mini"><div class="fill" style="width:${p}%"></div></div><span>${p.toFixed(0)}%</span></div>
+ </div>`}).join('');
+ $('sync').textContent='Last sync: '+(d.generated_at||'—');
 }
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-load().catch(e=>{document.getElementById('sync').textContent='Unable to load data';console.error(e)});
+load().catch(e=>{$('sync').textContent='Unable to load data';console.error(e)});
 </script>
 </body>
 </html>
