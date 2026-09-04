@@ -1,79 +1,101 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ANZCA Primary — Anki Progress</title>
 <style>
-:root{--bg:#f5f5f2;--card:#fff;--text:#1e1e1e;--muted:#727272;--line:#e3e3df;--soft:#ededE9;--bar:#252525}
+:root{--bg:#f5f5f2;--card:#fff;--text:#1f1f1f;--muted:#747474;--line:#e5e5e0;--bar:#242424;--soft:#ededE9}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.wrap{max-width:1120px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:18px}
-h1{font-size:25px;margin:0 0 4px;letter-spacing:-.5px}.sub,.muted{font-size:12px;color:var(--muted)}
-.hero,.card,.deck,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px}.hero{padding:22px;margin-bottom:12px}
-.herorow{display:flex;justify-content:space-between;align-items:end;gap:20px}.big{font-size:44px;font-weight:750;letter-spacing:-2px}.big small{font-size:16px;font-weight:500;color:var(--muted)}
+.wrap{max-width:1100px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:20px}
+h1{font-size:26px;margin:0 0 5px;letter-spacing:-.6px}.sub,.muted{color:var(--muted);font-size:12px}.updated{font-size:11px;color:var(--muted)}
+.hero,.card,.deck{background:var(--card);border:1px solid var(--line);border-radius:14px}.hero{padding:22px;margin-bottom:12px}
+.herorow{display:flex;justify-content:space-between;align-items:end;gap:20px}.big{font-size:45px;font-weight:750;letter-spacing:-2px}.big small{font-size:16px;font-weight:500;color:var(--muted)}
 .progress{height:10px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:14px}.fill{height:100%;background:var(--bar);border-radius:99px}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}.card{padding:15px}.num{font-size:24px;font-weight:700}.label{font-size:11px;color:var(--muted);margin-top:3px}
-.section{font-size:12px;font-weight:750;margin:20px 0 8px;letter-spacing:.3px}.panel{padding:18px}
-.bars{height:130px;display:grid;grid-template-columns:repeat(14,1fr);gap:6px;align-items:end}.barwrap{height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center}.bar{width:100%;max-width:32px;background:var(--bar);border-radius:4px 4px 1px 1px;min-height:2px}.barnum,.barlabel{font-size:8px}.barnum{margin-bottom:3px}.barlabel{color:var(--muted);margin-top:4px}
-.deck{padding:14px 16px;margin-bottom:8px}.parent{margin-top:14px}.indent{margin-left:24px}.dhead{display:flex;justify-content:space-between;gap:15px}.dname{font-weight:650;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pct{font-size:12px;color:var(--muted)}
+.section{font-size:12px;font-weight:750;margin:20px 0 8px;letter-spacing:.3px}.activity{padding:18px}
+.bars{height:135px;display:grid;grid-template-columns:repeat(14,1fr);gap:7px;align-items:end}
+.barwrap{height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center}.bar{width:100%;max-width:36px;background:var(--bar);border-radius:4px 4px 1px 1px;min-height:2px}.barlabel{font-size:8px;color:var(--muted);margin-top:4px}.barnum{font-size:8px;margin-bottom:3px}
+.summarygrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.metric{padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.metric .v{font-size:18px;font-weight:700}.metric .l{font-size:10px;color:var(--muted);margin-top:3px}
+.decks{display:flex;flex-direction:column;gap:8px}.deck{padding:14px 16px}.dhead{display:flex;justify-content:space-between;gap:15px}.dname{font-weight:650;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pct{font-size:12px;color:var(--muted)}
 .mini{height:7px;background:var(--soft);border-radius:99px;overflow:hidden;margin:9px 0}.meta{display:flex;flex-wrap:wrap;gap:12px;color:var(--muted);font-size:10px}.meta b{color:var(--text);font-weight:600}
-.insights{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.insight{padding:14px;background:var(--card);border:1px solid var(--line);border-radius:12px}.insight strong{display:block;font-size:20px;margin-top:4px}
-.footer{text-align:right;color:var(--muted);font-size:9px;margin-top:12px}.error{padding:18px;background:#fff0f0;border:1px solid #edcccc;border-radius:12px;color:#8a3333;font-size:13px}
-@media(max-width:760px){.wrap{padding:16px}.grid{grid-template-columns:repeat(2,1fr)}.insights{grid-template-columns:1fr}.bars{grid-template-columns:repeat(7,1fr)}.barwrap:nth-child(n+8){display:none}.big{font-size:36px}}
+.level1{margin-left:18px}.level2{margin-left:36px}.level3{margin-left:54px}.level4{margin-left:72px}
+.footer{text-align:right;color:var(--muted);font-size:9px;margin-top:12px}
+.note{padding:13px 15px;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:11px;color:var(--muted);line-height:1.45}
+@media(max-width:760px){.wrap{padding:16px}.grid,.summarygrid{grid-template-columns:repeat(2,1fr)}.big{font-size:36px}.top{align-items:start}.bars{grid-template-columns:repeat(7,1fr);height:145px}.barwrap:nth-child(n+8){display:none}.level1{margin-left:8px}.level2{margin-left:16px}.level3{margin-left:24px}.level4{margin-left:32px}}
 </style>
 </head>
 <body><div class="wrap"><div id="app">Loading…</div></div>
 <script>
-const f=n=>new Intl.NumberFormat().format(n||0), esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const f=n=>new Intl.NumberFormat().format(n||0);
+const pct=n=>n==null?"—":`${n}%`;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const min=n=>n==null?"—":`${n} min`;
+
+function deckRow(x){
+ const cls=x.level?`level${Math.min(x.level,4)}`:"";
+ return `<div class="deck ${cls}">
+  <div class="dhead"><div class="dname">${esc(x.display_name)}</div><div class="pct">${pct(x.progress)}</div></div>
+  <div class="mini"><div class="fill" style="width:${x.progress||0}%"></div></div>
+  <div class="meta">
+   <span><b>${f(x.seen)}</b> seen</span><span><b>${f(x.unseen)}</b> unseen</span>
+   <span><b>${f(x.mature)}</b> mature</span><span><b>${f(x.young)}</b> young</span>
+   <span><b>${f(x.learning)}</b> learning</span><span><b>${f(x.due)}</b> due</span>
+   <span><b>${f(x.overdue)}</b> overdue</span>
+   <span><b>${f(x.reviews_30d)}</b> reviews/30d</span>
+   <span><b>${x.again_rate_30d==null?"—":x.again_rate_30d+"%"}</b> Again</span>
+  </div>
+ </div>`;
+}
+
 function render(d){
  const o=d.overall, days=(d.activity||[]).slice(-14), mx=Math.max(1,...days.map(x=>x.count));
- const bars=days.map(x=>`<div class="barwrap"><div class="barnum">${f(x.count)}</div><div class="bar" style="height:${Math.max(2,Math.round(x.count/mx*80))}px"></div><div class="barlabel">${x.date.slice(5)}</div></div>`).join("");
- const s=d.summary;
- const deckRows=d.decks||[];
- function row(x,child=false){
-  const state=`<span><b>${f(x.mature)}</b> mature</span><span><b>${f(x.young)}</b> young</span><span><b>${f(x.learning)}</b> learning</span><span><b>${f(x.unseen)}</b> unseen</span>`;
-  return `<div class="deck ${child?'indent':''}">
-   <div class="dhead"><div class="dname">${esc(x.short_name)}${x.rollup?' <span class="muted">(incl. subdecks)</span>':''}</div><div class="pct">${x.progress}%</div></div>
-   <div class="mini"><div class="fill" style="width:${x.progress}%"></div></div>
-   <div class="meta">${state}<span><b>${f(x.due)}</b> due</span><span><b>${f(x.reviews_30d)}</b> reviews/30d</span><span><b>${x.again_rate_30d}%</b> Again</span></div>
-  </div>`;
- }
- let deckHtml="";
- for(const p of deckRows.filter(x=>x.level===1)){
-   deckHtml+=`<div class="parent">${row(p)}${deckRows.filter(x=>x.parent===p.name).map(c=>row(c,true)).join("")}</div>`;
- }
- // If there are deeper levels, display them after their immediate parent.
- const rendered=new Set(deckRows.filter(x=>x.level===1).map(x=>x.name));
- function descendants(parent, depth){
-   return deckRows.filter(x=>x.parent===parent.name).map(c=>{
-     rendered.add(c.name);
-     return row(c,true)+descendants(c,depth+1);
-   }).join("");
- }
- deckHtml=deckRows.filter(x=>x.level===1).map(p=>`<div class="parent">${row(p)}${descendants(p,2)}</div>`).join("");
-
- const insightHtml=`
- <div class="insights">
-  <div class="insight"><span class="muted">MATURE CARDS</span><strong>${f(s.mature)} <small class="muted">(${s.mature_pct}%)</small></strong></div>
-  <div class="insight"><span class="muted">DUE NOW</span><strong>${f(s.due)} <small class="muted">${f(s.overdue)} overdue</small></strong></div>
-  <div class="insight"><span class="muted">30-DAY RETENTION</span><strong>${s.retention_30d}% <small class="muted">${f(s.reviews_30d)} reviews</small></strong></div>
-  <div class="insight"><span class="muted">30-DAY AGAIN RATE</span><strong>${s.again_rate_30d}%</strong></div>
-  <div class="insight"><span class="muted">30-DAY STUDY TIME</span><strong>${s.study_hours_30d} h</strong></div>
-  <div class="insight"><span class="muted">AVG REVIEWS / ACTIVE DAY</span><strong>${s.avg_reviews_active_day}</strong></div>
- </div>`;
-
+ const bars=days.map(x=>`<div class="barwrap"><div class="barnum">${f(x.count)}</div><div class="bar" style="height:${Math.max(2,Math.round(x.count/mx*78))}px"></div><div class="barlabel">${x.date.slice(5)}</div></div>`).join("");
+ const decks=(d.decks||[]).map(deckRow).join("");
  document.getElementById("app").innerHTML=`
- <div class="top"><div><h1>ANZCA Primary — Anki</h1><div class="sub">Progress, workload, retention and study activity</div></div><div class="updated">Last sync: ${esc(d.updated_local||"—")}</div></div>
- <div class="hero"><div class="herorow"><div><div class="big">${o.progress}% <small>seen</small></div><div class="sub">${f(o.seen)} of ${f(o.total)} cards have been reviewed at least once</div></div><div style="text-align:right"><div class="sub">Unseen remaining</div><strong>${f(o.unseen)}</strong></div></div><div class="progress"><div class="fill" style="width:${o.progress}%"></div></div></div>
+ <div class="top"><div><h1>ANZCA Primary — Anki</h1><div class="sub">Progress, retention and workload across every deck and subdeck</div></div><div class="updated">Last sync: ${esc(d.updated_local||"—")}</div></div>
+
+ <div class="hero"><div class="herorow"><div><div class="big">${pct(o.progress)} <small>seen</small></div><div class="sub">${f(o.seen)} of ${f(o.total)} cards have been reviewed at least once</div></div><div style="text-align:right"><div class="sub">Unseen remaining</div><strong>${f(o.unseen)}</strong></div></div><div class="progress"><div class="fill" style="width:${o.progress||0}%"></div></div></div>
+
  <div class="grid">
   <div class="card"><div class="num">${f(d.today)}</div><div class="label">reviews today</div></div>
-  <div class="card"><div class="num">${f(d.last7)}</div><div class="label">reviews last 7 days</div></div>
-  <div class="card"><div class="num">${f(s.mature)}</div><div class="label">mature cards (≥21d interval)</div></div>
-  <div class="card"><div class="num">${f(s.due)}</div><div class="label">cards due now</div></div>
+  <div class="card"><div class="num">${f(d.last7)}</div><div class="label">reviews · last 7 days</div></div>
+  <div class="card"><div class="num">${f(d.last30)}</div><div class="label">reviews · last 30 days</div></div>
+  <div class="card"><div class="num">${f(d.active_days_30)}</div><div class="label">active study days · last 30</div></div>
  </div>
- <div class="section">STUDY ACTIVITY — LAST 14 DAYS</div><div class="panel"><div class="bars">${bars||'<span class="muted">No review activity.</span>'}</div></div>
- <div class="section">WHAT YOUR RECENT STUDYING LOOKS LIKE</div>${insightHtml}
- <div class="section">DECKS & SUBDECKS</div><div>${deckHtml||'<span class="muted">No decks found.</span>'}</div>
- <div class="footer">Seen = reviewed at least once. Mature = current interval ≥21 days. Retention = reviews answered Hard/Good/Easy ÷ all reviews over the last 30 days. Data is aggregate only.</div>`;
+
+ <div class="section">CURRENT CARD STATE</div>
+ <div class="summarygrid">
+  <div class="metric"><div class="v">${f(o.new)}</div><div class="l">new / unseen</div></div>
+  <div class="metric"><div class="v">${f(o.learning)}</div><div class="l">learning</div></div>
+  <div class="metric"><div class="v">${f(o.young)}</div><div class="l">young reviews (&lt;21d)</div></div>
+  <div class="metric"><div class="v">${f(o.mature)}</div><div class="l">mature reviews (≥21d)</div></div>
+  <div class="metric"><div class="v">${f(o.relearning)}</div><div class="l">relearning</div></div>
+  <div class="metric"><div class="v">${f(o.suspended)}</div><div class="l">suspended</div></div>
+  <div class="metric"><div class="v">${f(o.due)}</div><div class="l">due now</div></div>
+  <div class="metric"><div class="v">${f(o.overdue)}</div><div class="l">overdue reviews</div></div>
+ </div>
+
+ <div class="section">RECENT ACTIVITY</div>
+ <div class="hero activity"><div class="bars">${bars||'<span class="muted">No review activity.</span>'}</div></div>
+
+ <div class="section">STUDY PACE</div>
+ <div class="summarygrid">
+  <div class="metric"><div class="v">${f(d.introduced7)}</div><div class="l">new cards introduced · 7d</div></div>
+  <div class="metric"><div class="v">${f(d.introduced30)}</div><div class="l">new cards introduced · 30d</div></div>
+  <div class="metric"><div class="v">${f(d.new_cards_per_day_30)}</div><div class="l">new cards/day · 30d</div></div>
+  <div class="metric"><div class="v">${d.eta_days_unseen==null?"—":f(d.eta_days_unseen)+" d"}</div><div class="l">estimated days to see all unseen</div></div>
+  <div class="metric"><div class="v">${f(d.avg_reviews_active_day_30)}</div><div class="l">reviews / active day · 30d</div></div>
+  <div class="metric"><div class="v">${min(o.time_min_30d)}</div><div class="l">study time · 30d</div></div>
+  <div class="metric"><div class="v">${o.again_rate_30d==null?"—":o.again_rate_30d+"%"}</div><div class="l">Again rate · 30d</div></div>
+  <div class="metric"><div class="v">${f(o.lapsed)}</div><div class="l">cards with ≥1 lapse</div></div>
+ </div>
+
+ <div class="section">DECKS & SUBDECKS</div>
+ <div class="decks">${decks||'<span class="muted">No matching decks.</span>'}</div>
+
+ <div class="footer">Seen = card has been reviewed at least once. Mature = current review interval ≥21 days. Parent decks include their descendants; child rows are calculated independently.</div>`;
 }
-fetch("data/stats.json?"+Date.now(),{cache:"no-store"}).then(r=>r.json()).then(render).catch(e=>document.getElementById("app").innerHTML=`<div class="error"><b>Stats unavailable.</b><br>${esc(e.message)}</div>`);
+fetch("data/stats.json?"+Date.now(),{cache:"no-store"}).then(r=>r.json()).then(render).catch(e=>document.getElementById("app").innerHTML=`<div class="note"><b>Stats unavailable.</b><br>${esc(e.message)}</div>`);
 </script></body></html>
