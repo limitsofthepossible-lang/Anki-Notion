@@ -1,0 +1,161 @@
+{
+  "updated_local": "2026-09-04 13:49",
+  "overall": {
+    "name": "My ANZCA primary",
+    "short_name": "My ANZCA primary",
+    "parent": null,
+    "total": 1928,
+    "seen": 0,
+    "unseen": 1928,
+    "progress": 0.0,
+    "due": 25,
+    "new_due": 25,
+    "learning_due": 0,
+    "review_due": 0,
+    "reviews_30d": 0,
+    "again_30d": 0
+  },
+  "today": 0,
+  "last7": 641,
+  "last30": 4444,
+  "total_reviews": 0,
+  "activity": [
+    {
+      "date": "2021-08-20",
+      "count": 6
+    },
+    {
+      "date": "2021-08-21",
+      "count": 165
+    },
+    {
+      "date": "2021-08-22",
+      "count": 130
+    },
+    {
+      "date": "2021-08-23",
+      "count": 58
+    },
+    {
+      "date": "2021-08-24",
+      "count": 106
+    },
+    {
+      "date": "2021-08-26",
+      "count": 4
+    },
+    {
+      "date": "2021-08-27",
+      "count": 315
+    },
+    {
+      "date": "2021-08-28",
+      "count": 178
+    },
+    {
+      "date": "2021-08-29",
+      "count": 170
+    },
+    {
+      "date": "2021-08-30",
+      "count": 60
+    },
+    {
+      "date": "2021-08-31",
+      "count": 146
+    },
+    {
+      "date": "2021-09-01",
+      "count": 204
+    },
+    {
+      "date": "2021-09-02",
+      "count": 20
+    },
+    {
+      "date": "2021-09-03",
+      "count": 18
+    },
+    {
+      "date": "2021-09-04",
+      "count": 134
+    },
+    {
+      "date": "2021-09-06",
+      "count": 50
+    },
+    {
+      "date": "2021-09-07",
+      "count": 77
+    },
+    {
+      "date": "2021-09-08",
+      "count": 141
+    },
+    {
+      "date": "2021-09-09",
+      "count": 321
+    },
+    {
+      "date": "2021-09-10",
+      "count": 304
+    },
+    {
+      "date": "2021-09-11",
+      "count": 440
+    },
+    {
+      "date": "2021-09-12",
+      "count": 457
+    },
+    {
+      "date": "2021-09-13",
+      "count": 299
+    },
+    {
+      "date": "2021-09-14",
+      "count": 287
+    },
+    {
+      "date": "2021-09-15",
+      "count": 329
+    },
+    {
+      "date": "2021-09-20",
+      "count": 10
+    },
+    {
+      "date": "2023-05-24",
+      "count": 1
+    },
+    {
+      "date": "2025-07-07",
+      "count": 12
+    },
+    {
+      "date": "2026-02-28",
+      "count": 1
+    },
+    {
+      "date": "2026-07-26",
+      "count": 1
+    }
+  ],
+  "decks": [
+    {
+      "name": "My ANZCA primary",
+      "short_name": "My ANZCA primary",
+      "parent": null,
+      "total": 1928,
+      "seen": 0,
+      "unseen": 1928,
+      "progress": 0.0,
+      "due": 25,
+      "new_due": 25,
+      "learning_due": 0,
+      "review_due": 0,
+      "reviews_30d": 0,
+      "again_30d": 0
+    }
+  ]
+}
