@@ -101,10 +101,10 @@ def introduced(days):
  s=set()
  for r in ROOTS:s.update(anki("findCards",{"query":f'deck:"{r}" introduced:{days}'})or[])
  return len(s)
-new7,new30=introduced(7),introduced(30)
+new_today,new7,new30=introduced(1),introduced(7),introduced(30)
 # Study pace is based on new cards introduced in the last 7 days, which
 # better reflects current study behaviour than averaging over 30 days.
 pace=new7/7 if new7 else 0
-stats={"generated_at":datetime.now().astimezone().strftime("%Y-%m-%d %H:%M"),"overall":{**overall,"reviews_today":int(anki("getNumCardsReviewedToday")or 0),"reviews_7d":reviews_7d,"reviews_30d":reviews_30d_byday,"active_days_30d":active_days_30d,"new_7d":new7,"new_30d":new30,"new_per_day_7d":pace if new7 else None,"new_per_day_30d":new30/30 if new30 else None,"eta_days":overall["unseen"]/pace if pace else None},"activity":activity,"decks":decks,"roots":ROOTS}
+stats={"generated_at":datetime.now().astimezone().strftime("%Y-%m-%d %H:%M"),"overall":{**overall,"reviews_today":int(anki("getNumCardsReviewedToday")or 0),"reviews_7d":reviews_7d,"reviews_30d":reviews_30d_byday,"active_days_30d":active_days_30d,"new_today":new_today,"new_7d":new7,"new_30d":new30,"new_per_day_7d":pace if new7 else None,"new_per_day_30d":new30/30 if new30 else None,"eta_days":overall["unseen"]/pace if pace else None},"activity":activity,"decks":decks,"roots":ROOTS}
 github_put("data/stats.json",json.dumps(stats,indent=2))
 assigned=sum(len(v) for v in grouped.values());print(f"Synced {assigned} cards across {len(ROOTS)} main decks.");print(f"Progress: {overall['seen']/overall['total']*100 if overall['total'] else 0:.1f}% | unseen: {overall['unseen']} | reviews 30d: {overall['reviews_30d']}")
