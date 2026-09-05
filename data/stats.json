@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05 19:42",
+  "generated_at": "2026-09-05 19:55",
   "overall": {
     "total": 4512,
     "seen": 77,
@@ -17,12 +17,13 @@
     "again_rate": 13.5,
     "time_ms": 6738267,
     "reviews_today": 91,
-    "reviews_7d": 0,
-    "active_days_30d": 0,
+    "reviews_7d": 200,
+    "active_days_30d": 2,
     "new_7d": 77,
     "new_30d": 77,
+    "new_per_day_7d": 11.0,
     "new_per_day_30d": 2.566666666666667,
-    "eta_days": 1727.9220779220777
+    "eta_days": 403.1818181818182
   },
   "activity": [
     {
@@ -75,11 +76,11 @@
     },
     {
       "date": "2026-09-04",
-      "count": 0
+      "count": 109
     },
     {
       "date": "2026-09-05",
-      "count": 0
+      "count": 91
     }
   ],
   "decks": [
