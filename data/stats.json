@@ -1,34 +1,30 @@
 {
-  "generated_at": "2026-09-04 21:52",
+  "generated_at": "2026-09-05 19:42",
   "overall": {
     "total": 4512,
-    "seen": 45,
-    "unseen": 4467,
-    "new": 4465,
+    "seen": 77,
+    "unseen": 4435,
+    "new": 4433,
     "learning": 0,
     "relearning": 0,
-    "young": 45,
+    "young": 77,
     "mature": 0,
     "suspended": 2,
     "buried": 0,
     "due": 0,
     "overdue": 0,
-    "reviews_30d": 109,
-    "again_rate": 14.678899082568808,
-    "time_ms": 3982733,
-    "reviews_today": 109,
+    "reviews_30d": 200,
+    "again_rate": 13.5,
+    "time_ms": 6738267,
+    "reviews_today": 91,
     "reviews_7d": 0,
     "active_days_30d": 0,
-    "new_7d": 45,
-    "new_30d": 45,
-    "new_per_day_30d": 1.5,
-    "eta_days": 2978.0
+    "new_7d": 77,
+    "new_30d": 77,
+    "new_per_day_30d": 2.566666666666667,
+    "eta_days": 1727.9220779220777
   },
   "activity": [
-    {
-      "date": "2026-08-22",
-      "count": 0
-    },
     {
       "date": "2026-08-23",
       "count": 0
@@ -80,44 +76,48 @@
     {
       "date": "2026-09-04",
       "count": 0
+    },
+    {
+      "date": "2026-09-05",
+      "count": 0
     }
   ],
   "decks": [
     {
       "name": "ANZCA Primary",
       "total": 1928,
-      "seen": 20,
-      "unseen": 1908,
-      "new": 1908,
+      "seen": 36,
+      "unseen": 1892,
+      "new": 1892,
       "learning": 0,
       "relearning": 0,
-      "young": 20,
+      "young": 36,
       "mature": 0,
       "suspended": 0,
       "buried": 0,
       "due": 0,
       "overdue": 0,
-      "reviews_30d": 46,
-      "again_rate": 19.565217391304348,
-      "time_ms": 2286124
+      "reviews_30d": 94,
+      "again_rate": 18.085106382978726,
+      "time_ms": 4157608
     },
     {
       "name": "Pharmacology",
       "total": 2584,
-      "seen": 25,
-      "unseen": 2559,
-      "new": 2557,
+      "seen": 41,
+      "unseen": 2543,
+      "new": 2541,
       "learning": 0,
       "relearning": 0,
-      "young": 25,
+      "young": 41,
       "mature": 0,
       "suspended": 2,
       "buried": 0,
       "due": 0,
       "overdue": 0,
-      "reviews_30d": 63,
-      "again_rate": 11.11111111111111,
-      "time_ms": 1696609
+      "reviews_30d": 106,
+      "again_rate": 9.433962264150944,
+      "time_ms": 2580659
     }
   ],
   "roots": [
