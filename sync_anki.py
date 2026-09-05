@@ -60,20 +60,51 @@ def metrics(cards):
  ids=[int(c["cardId"]) for c in cards];st=defaultdict(int)
  for c in cards:st[classify(c)]+=1
  seen=sum(int(c.get("reps",0)or 0)>0 for c in cards);reviews,again,tm,_=review_stats(ids) if ids else(0,0,0,{})
- due_ids=set(anki("areDue",{"cards":ids}) or[]) if ids else set();due=sum(1 for c in cards if int(c["cardId"]) in due_ids and classify(c)!="new")
- epoch=datetime(1970,1,1).date();ordtoday=(datetime.now().astimezone().date()-epoch).days
- overdue=sum(1 for c in cards if int(c.get("type",0)or 0)==2 and int(c.get("due",0)or 0)<ordtoday)
+ # Use Anki search semantics for due/overdue. The raw `due` field has
+ # different meanings for new, learning, and review cards, so comparing it
+ # directly to a Unix-day ordinal can falsely mark recently studied cards overdue.
+ # Use Anki search semantics for due/overdue. The raw `due` field has
+ # different meanings for new, learning, and review cards. Query every
+ # configured root so the combined dashboard includes both main decks.
+ due_ids=set(); overdue_ids=set()
+ for r in ROOTS:
+  due_ids.update(anki("findCards",{"query":f'deck:"{r}" is:due -is:new'}) or[])
+  overdue_ids.update(anki("findCards",{"query":f'deck:"{r}" is:review prop:due<=-1'}) or[])
+ due=sum(1 for cid in ids if cid in due_ids)
+ overdue=sum(1 for cid in ids if cid in overdue_ids)
  return{"total":len(cards),"seen":seen,"unseen":len(cards)-seen,"new":st["new"],"learning":st["learning"],"relearning":st["relearning"],"young":st["young"],"mature":st["mature"],"suspended":st["suspended"],"buried":st["buried"],"due":due,"overdue":overdue,"reviews_30d":reviews,"again_rate":again/reviews*100 if reviews else None,"time_ms":tm}
 overall=metrics([c for r in ROOTS for c in grouped[r]]);decks=[{"name":r,**metrics(grouped[r])} for r in ROOTS]
-rows=anki("getNumCardsReviewedByDay") or[];lookup={}
-for x in rows:
- if isinstance(x,dict):lookup[str(x.get("date")or x.get("day")or"")[:10]]=int(x.get("count",x.get("reviews",0))or 0)
-today=datetime.now().astimezone().date();activity=[{"date":(today-timedelta(days=i)).isoformat(),"count":lookup.get((today-timedelta(days=i)).isoformat(),0)} for i in range(13,-1,-1)]
+rows=anki("getNumCardsReviewedByDay") or[]
+# AnkiConnect returns [[dateString, count], ...]. Be tolerant of dict-shaped
+# responses from older/alternate implementations as well.
+lookup={}
+if isinstance(rows,dict):
+ for k,v in rows.items():
+  try:lookup[str(k)[:10]]=int(v or 0)
+  except (TypeError,ValueError):pass
+elif isinstance(rows,list):
+ for x in rows:
+  if isinstance(x,(list,tuple)) and len(x)>=2:
+   try:lookup[str(x[0])[:10]]=int(x[1] or 0)
+   except (TypeError,ValueError):pass
+  elif isinstance(x,dict):
+   try:lookup[str(x.get("date")or x.get("day")or "")[:10]]=int(x.get("count",x.get("reviews",0))or 0)
+   except (TypeError,ValueError):pass
+today=datetime.now().astimezone().date()
+activity=[{"date":(today-timedelta(days=i)).isoformat(),"count":lookup.get((today-timedelta(days=i)).isoformat(),0)} for i in range(13,-1,-1)]
+# Use the full returned history for 7/30-day review totals and active days.
+# The visible chart remains 14 days.
+reviews_7d=sum(lookup.get((today-timedelta(days=i)).isoformat(),0) for i in range(7))
+reviews_30d_byday=sum(lookup.get((today-timedelta(days=i)).isoformat(),0) for i in range(30))
+active_days_30d=sum(lookup.get((today-timedelta(days=i)).isoformat(),0)>0 for i in range(30))
 def introduced(days):
  s=set()
  for r in ROOTS:s.update(anki("findCards",{"query":f'deck:"{r}" introduced:{days}'})or[])
  return len(s)
-new7,new30=introduced(7),introduced(30);pace=new30/30 if new30 else 0
-stats={"generated_at":datetime.now().astimezone().strftime("%Y-%m-%d %H:%M"),"overall":{**overall,"reviews_today":int(anki("getNumCardsReviewedToday")or 0),"reviews_7d":sum(x["count"] for x in activity[-7:]),"active_days_30d":sum(x["count"]>0 for x in activity),"new_7d":new7,"new_30d":new30,"new_per_day_30d":pace if new30 else None,"eta_days":overall["unseen"]/pace if pace else None},"activity":activity,"decks":decks,"roots":ROOTS}
+new7,new30=introduced(7),introduced(30)
+# Study pace is based on new cards introduced in the last 7 days, which
+# better reflects current study behaviour than averaging over 30 days.
+pace=new7/7 if new7 else 0
+stats={"generated_at":datetime.now().astimezone().strftime("%Y-%m-%d %H:%M"),"overall":{**overall,"reviews_today":int(anki("getNumCardsReviewedToday")or 0),"reviews_7d":reviews_7d,"reviews_30d":reviews_30d_byday,"active_days_30d":active_days_30d,"new_7d":new7,"new_30d":new30,"new_per_day_7d":pace if new7 else None,"new_per_day_30d":new30/30 if new30 else None,"eta_days":overall["unseen"]/pace if pace else None},"activity":activity,"decks":decks,"roots":ROOTS}
 github_put("data/stats.json",json.dumps(stats,indent=2))
 assigned=sum(len(v) for v in grouped.values());print(f"Synced {assigned} cards across {len(ROOTS)} main decks.");print(f"Progress: {overall['seen']/overall['total']*100 if overall['total'] else 0:.1f}% | unseen: {overall['unseen']} | reviews 30d: {overall['reviews_30d']}")
