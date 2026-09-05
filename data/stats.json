@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05 19:55",
+  "generated_at": "2026-09-05 20:01",
   "overall": {
     "total": 4512,
     "seen": 77,
@@ -19,6 +19,7 @@
     "reviews_today": 91,
     "reviews_7d": 200,
     "active_days_30d": 2,
+    "new_today": 32,
     "new_7d": 77,
     "new_30d": 77,
     "new_per_day_7d": 11.0,
