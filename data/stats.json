@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05 20:01",
+  "generated_at": "2026-09-05 21:00",
   "overall": {
     "total": 4512,
     "seen": 77,
@@ -86,7 +86,7 @@
   ],
   "decks": [
     {
-      "name": "ANZCA Primary",
+      "name": "ANZCA primary",
       "total": 1928,
       "seen": 36,
       "unseen": 1892,
@@ -123,7 +123,7 @@
     }
   ],
   "roots": [
-    "ANZCA Primary",
+    "ANZCA primary",
     "Pharmacology"
   ]
 }
