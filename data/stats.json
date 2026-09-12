@@ -1,40 +1,32 @@
 {
-  "generated_at": "2026-09-10 21:00",
+  "generated_at": "2026-09-12 21:00",
   "overall": {
     "total": 4512,
-    "seen": 109,
-    "unseen": 4403,
-    "new": 4400,
-    "learning": 1,
+    "seen": 117,
+    "unseen": 4395,
+    "new": 4392,
+    "learning": 2,
     "relearning": 0,
-    "young": 104,
-    "mature": 4,
+    "young": 102,
+    "mature": 13,
     "suspended": 3,
     "buried": 0,
-    "due": 72,
-    "overdue": 59,
-    "reviews_30d": 300,
-    "again_rate": 11.333333333333332,
-    "time_ms": 10197847,
+    "due": 70,
+    "overdue": 62,
+    "reviews_30d": 340,
+    "again_rate": 11.470588235294118,
+    "time_ms": 11602786,
     "reviews_today": 0,
-    "reviews_7d": 300,
-    "active_days_30d": 4,
+    "reviews_7d": 140,
+    "active_days_30d": 6,
     "new_today": 0,
-    "new_7d": 109,
-    "new_30d": 109,
-    "new_per_day_7d": 15.571428571428571,
-    "new_per_day_30d": 3.6333333333333333,
-    "eta_days": 282.76146788990826
+    "new_7d": 40,
+    "new_30d": 117,
+    "new_per_day_7d": 5.714285714285714,
+    "new_per_day_30d": 3.9,
+    "eta_days": 769.125
   },
   "activity": [
-    {
-      "date": "2026-08-28",
-      "count": 0
-    },
-    {
-      "date": "2026-08-29",
-      "count": 0
-    },
     {
       "date": "2026-08-30",
       "count": 0
@@ -81,6 +73,14 @@
     },
     {
       "date": "2026-09-10",
+      "count": 12
+    },
+    {
+      "date": "2026-09-11",
+      "count": 28
+    },
+    {
+      "date": "2026-09-12",
       "count": 0
     }
   ],
@@ -88,20 +88,20 @@
     {
       "name": "ANZCA primary",
       "total": 1928,
-      "seen": 68,
-      "unseen": 1860,
-      "new": 1859,
-      "learning": 0,
+      "seen": 76,
+      "unseen": 1852,
+      "new": 1851,
+      "learning": 1,
       "relearning": 0,
-      "young": 64,
-      "mature": 4,
+      "young": 62,
+      "mature": 13,
       "suspended": 1,
       "buried": 0,
-      "due": 40,
-      "overdue": 33,
-      "reviews_30d": 194,
-      "again_rate": 12.371134020618557,
-      "time_ms": 7617188
+      "due": 32,
+      "overdue": 28,
+      "reviews_30d": 234,
+      "again_rate": 12.393162393162394,
+      "time_ms": 9022127
     },
     {
       "name": "Pharmacology",
@@ -115,8 +115,8 @@
       "mature": 0,
       "suspended": 2,
       "buried": 0,
-      "due": 32,
-      "overdue": 26,
+      "due": 38,
+      "overdue": 34,
       "reviews_30d": 106,
       "again_rate": 9.433962264150944,
       "time_ms": 2580659
