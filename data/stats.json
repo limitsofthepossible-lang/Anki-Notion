@@ -1,40 +1,32 @@
 {
-  "generated_at": "2026-09-12 21:00",
+  "generated_at": "2026-09-14 17:49",
   "overall": {
     "total": 4512,
-    "seen": 117,
-    "unseen": 4395,
-    "new": 4392,
-    "learning": 2,
+    "seen": 128,
+    "unseen": 4384,
+    "new": 4379,
+    "learning": 3,
     "relearning": 0,
-    "young": 102,
-    "mature": 13,
-    "suspended": 3,
+    "young": 97,
+    "mature": 28,
+    "suspended": 5,
     "buried": 0,
-    "due": 70,
-    "overdue": 62,
-    "reviews_30d": 340,
-    "again_rate": 11.470588235294118,
-    "time_ms": 11602786,
-    "reviews_today": 0,
-    "reviews_7d": 140,
-    "active_days_30d": 6,
-    "new_today": 0,
-    "new_7d": 40,
-    "new_30d": 117,
-    "new_per_day_7d": 5.714285714285714,
-    "new_per_day_30d": 3.9,
-    "eta_days": 769.125
+    "due": 56,
+    "overdue": 48,
+    "reviews_30d": 400,
+    "again_rate": 11.0,
+    "time_ms": 13852449,
+    "reviews_today": 16,
+    "reviews_7d": 100,
+    "active_days_30d": 9,
+    "new_today": 1,
+    "new_7d": 19,
+    "new_30d": 128,
+    "new_per_day_7d": 2.7142857142857144,
+    "new_per_day_30d": 4.266666666666667,
+    "eta_days": 1615.157894736842
   },
   "activity": [
-    {
-      "date": "2026-08-30",
-      "count": 0
-    },
-    {
-      "date": "2026-08-31",
-      "count": 0
-    },
     {
       "date": "2026-09-01",
       "count": 0
@@ -81,27 +73,35 @@
     },
     {
       "date": "2026-09-12",
-      "count": 0
+      "count": 6
+    },
+    {
+      "date": "2026-09-13",
+      "count": 38
+    },
+    {
+      "date": "2026-09-14",
+      "count": 16
     }
   ],
   "decks": [
     {
       "name": "ANZCA primary",
       "total": 1928,
-      "seen": 76,
-      "unseen": 1852,
-      "new": 1851,
-      "learning": 1,
+      "seen": 87,
+      "unseen": 1841,
+      "new": 1838,
+      "learning": 2,
       "relearning": 0,
-      "young": 62,
-      "mature": 13,
-      "suspended": 1,
+      "young": 57,
+      "mature": 28,
+      "suspended": 3,
       "buried": 0,
-      "due": 32,
-      "overdue": 28,
-      "reviews_30d": 234,
-      "again_rate": 12.393162393162394,
-      "time_ms": 9022127
+      "due": 18,
+      "overdue": 11,
+      "reviews_30d": 294,
+      "again_rate": 11.564625850340136,
+      "time_ms": 11271790
     },
     {
       "name": "Pharmacology",
@@ -116,7 +116,7 @@
       "suspended": 2,
       "buried": 0,
       "due": 38,
-      "overdue": 34,
+      "overdue": 37,
       "reviews_30d": 106,
       "again_rate": 9.433962264150944,
       "time_ms": 2580659
