@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-15 21:00",
+  "generated_at": "2026-09-16 21:00",
   "overall": {
     "total": 4512,
     "seen": 128,
@@ -11,8 +11,8 @@
     "mature": 30,
     "suspended": 6,
     "buried": 0,
-    "due": 59,
-    "overdue": 51,
+    "due": 67,
+    "overdue": 57,
     "reviews_30d": 405,
     "again_rate": 11.11111111111111,
     "time_ms": 14075929,
@@ -27,10 +27,6 @@
     "eta_days": 1615.157894736842
   },
   "activity": [
-    {
-      "date": "2026-09-02",
-      "count": 0
-    },
     {
       "date": "2026-09-03",
       "count": 0
@@ -82,6 +78,10 @@
     {
       "date": "2026-09-15",
       "count": 0
+    },
+    {
+      "date": "2026-09-16",
+      "count": 0
     }
   ],
   "decks": [
@@ -97,8 +97,8 @@
       "mature": 30,
       "suspended": 4,
       "buried": 0,
-      "due": 21,
-      "overdue": 14,
+      "due": 29,
+      "overdue": 20,
       "reviews_30d": 299,
       "again_rate": 11.705685618729097,
       "time_ms": 11495270
