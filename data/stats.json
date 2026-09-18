@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-17 21:00",
+  "generated_at": "2026-09-19 08:01",
   "overall": {
     "total": 4512,
     "seen": 137,
@@ -11,30 +11,22 @@
     "mature": 33,
     "suspended": 9,
     "buried": 0,
-    "due": 71,
-    "overdue": 60,
+    "due": 79,
+    "overdue": 66,
     "reviews_30d": 427,
     "again_rate": 11.475409836065573,
     "time_ms": 14932550,
     "reviews_today": 0,
-    "reviews_7d": 115,
+    "reviews_7d": 81,
     "active_days_30d": 9,
     "new_today": 0,
-    "new_7d": 25,
+    "new_7d": 19,
     "new_30d": 137,
-    "new_per_day_7d": 3.5714285714285716,
+    "new_per_day_7d": 2.7142857142857144,
     "new_per_day_30d": 4.566666666666666,
-    "eta_days": 1225.0
+    "eta_days": 1611.842105263158
   },
   "activity": [
-    {
-      "date": "2026-09-04",
-      "count": 109
-    },
-    {
-      "date": "2026-09-05",
-      "count": 91
-    },
     {
       "date": "2026-09-06",
       "count": 40
@@ -82,6 +74,14 @@
     {
       "date": "2026-09-17",
       "count": 0
+    },
+    {
+      "date": "2026-09-18",
+      "count": 0
+    },
+    {
+      "date": "2026-09-19",
+      "count": 0
     }
   ],
   "decks": [
@@ -97,8 +97,8 @@
       "mature": 33,
       "suspended": 7,
       "buried": 0,
-      "due": 33,
-      "overdue": 23,
+      "due": 39,
+      "overdue": 29,
       "reviews_30d": 321,
       "again_rate": 12.149532710280374,
       "time_ms": 12351891
@@ -115,7 +115,7 @@
       "mature": 0,
       "suspended": 2,
       "buried": 0,
-      "due": 38,
+      "due": 40,
       "overdue": 37,
       "reviews_30d": 106,
       "again_rate": 9.433962264150944,
