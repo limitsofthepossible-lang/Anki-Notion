@@ -1,24 +1,24 @@
 {
-  "generated_at": "2026-09-22 21:00",
+  "generated_at": "2026-09-23 21:00",
   "overall": {
     "total": 4512,
     "seen": 137,
     "unseen": 4375,
     "new": 4367,
-    "learning": 8,
+    "learning": 2,
     "relearning": 0,
-    "young": 95,
-    "mature": 33,
+    "young": 98,
+    "mature": 36,
     "suspended": 9,
     "buried": 0,
-    "due": 91,
-    "overdue": 83,
-    "reviews_30d": 427,
-    "again_rate": 11.475409836065573,
-    "time_ms": 14932550,
-    "reviews_today": 0,
-    "reviews_7d": 0,
-    "active_days_30d": 9,
+    "due": 86,
+    "overdue": 81,
+    "reviews_30d": 446,
+    "again_rate": 11.883408071748878,
+    "time_ms": 15871197,
+    "reviews_today": 17,
+    "reviews_7d": 19,
+    "active_days_30d": 11,
     "new_today": 0,
     "new_7d": 0,
     "new_30d": 137,
@@ -27,10 +27,6 @@
     "eta_days": null
   },
   "activity": [
-    {
-      "date": "2026-09-09",
-      "count": 0
-    },
     {
       "date": "2026-09-10",
       "count": 12
@@ -61,7 +57,7 @@
     },
     {
       "date": "2026-09-17",
-      "count": 0
+      "count": 2
     },
     {
       "date": "2026-09-18",
@@ -82,6 +78,10 @@
     {
       "date": "2026-09-22",
       "count": 0
+    },
+    {
+      "date": "2026-09-23",
+      "count": 17
     }
   ],
   "decks": [
@@ -91,17 +91,17 @@
       "seen": 96,
       "unseen": 1832,
       "new": 1826,
-      "learning": 7,
+      "learning": 1,
       "relearning": 0,
-      "young": 55,
-      "mature": 33,
+      "young": 58,
+      "mature": 36,
       "suspended": 7,
       "buried": 0,
-      "due": 51,
-      "overdue": 44,
-      "reviews_30d": 321,
-      "again_rate": 12.149532710280374,
-      "time_ms": 12351891
+      "due": 45,
+      "overdue": 42,
+      "reviews_30d": 340,
+      "again_rate": 12.647058823529411,
+      "time_ms": 13290538
     },
     {
       "name": "Pharmacology",
@@ -115,7 +115,7 @@
       "mature": 0,
       "suspended": 2,
       "buried": 0,
-      "due": 40,
+      "due": 41,
       "overdue": 39,
       "reviews_30d": 106,
       "again_rate": 9.433962264150944,
